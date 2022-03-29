@@ -31,6 +31,7 @@ public interface LibroRepositorio extends JpaRepository<Libro, String>{
     @Query("UPDATE Libro AS l SET l.ejemplaresPrestados = :ejemplaresPrestados, l.ejemplaresRestantes = :ejemplaresRestantes WHERE l.id = :id")
     public void actualizarEjemplares(@Param("id") String id, @Param("ejemplaresPrestados") Integer ejemplaresPrestados, @Param("ejemplaresRestantes") Integer ejemplaresRestantes);
     
+    // Traigo todos los libros que esten de alta en autor, editotiral o libro. Si alguna de las altas esta en falso. No lo trae y no se mostrará en la lista
     @Query("SELECT l FROM Libro AS l JOIN Autor AS a ON l.autor = a.id JOIN Editorial AS e ON l.editorial = e.id WHERE a.alta IS TRUE AND e.alta IS TRUE AND l.alta IS TRUE") // l ES UNA L minuscula
     public List<Libro> buscarLibroPorAlta();
     

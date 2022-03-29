@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRESTAMO - Libería</title>
+</head>
+<body class="bg-dark">
+    <header>
+        <ul class="nav nav-pills nav-fill ">
+            <li class="nav-item border border-danger">
+              <a class="nav-link link link-warning" aria-current="page" href="/">INICIO</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/libro/lista">LISTA DE LIBROS</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/editorial/lista">LISTA DE EDITORIALES</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/autor/lista">LISTA DE AUTORES</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/cliente/registro">CLIENTES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-warning active" href="/prestamo/lista">PRESTAMO DE LIBROS</a>
+            </li>
+          </ul>
+    </header>
+
+    <main>
+        <br>
+        
+        <h1 class="h1 text-warning">Lista de prestamos</h1>
+        <br>
+
+      <div class="d-flex justify-content-between">
+        <div>
+            <a class="btn btn-success" href="/prestamo/hacer">Hacer prestamo</a>
+        </div>
+
+        <div>
+            <a class="btn btn-warning" href="#">¿¿¿ ### ???</a>
+        </div>
+      </div>
+
+      <br>
+
+      <table class="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col">Titulo</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Fecha de prestamo</th>
+              <th scope="col">Fecha de devolucion</th>
+            </tr>
+          </thead>
+          <tbody th:each="prestamo: ${prestamos}">
+            <tr>
+              <th scope="row"><span th:text="${prestamo.libro.titulo}"></span></th>
+              <th scope="row"><span th:text="${prestamo.cliente.nombre}"></span> <span th:text="${prestamo.cliente.apellido}"></span></th>
+              <th scope="row"><span th:text="${prestamo.fechaPrestamo}"></span></th>
+              <th scope="row"><span th:text="${prestamo.fechaDevolucion}"></span></th>
+              <!--
+              <td><a th:href="@{/libro/editar/__${libro.id}__}" class="btn btn-primary">Editar</a></td>
+              <td><a th:href="@{/libro/eliminar/__${libro.id}__}" class="btn btn-danger">Dar de baja</a></td>
+              -->
+            </tr>
+          </tbody>
+      </table>
+
+  </main>

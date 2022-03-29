@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIBROS DE BAJA - Libería</title>
+</head>
+<body class="bg-dark">
+    <header>
+        <ul class="nav nav-pills nav-fill ">
+            <li class="nav-item border border-danger">
+              <a class="nav-link link link-warning" aria-current="page" href="/">INICIO</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning active" href="/libro/lista">LISTA DE LIBROS</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/editorial/lista">LISTA DE EDITORIALES</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/autor/lista">LISTA DE AUTORES</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="/cliente/registro">CLIENTES</a>
+            </li>
+            <li class="nav-item border border-danger">
+              <a class="nav-link link-warning" href="#">PRESTAMO DE LIBROS</a>
+            </li>
+          </ul>
+    </header>
+
+    <main>
+      <br>
+
+        <h2 class="h2" style="color: orange;">Libros en estado de baja</h2>
+
+        <h4 class="h4" style="color: red">** Si esta buscando un libro dado de baja y no lo encuentra, puede deberse a que la editorial o el autor esten dados de baja **</h4>
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <a class="btn btn-success" href="/libro/agregar">Agregar libro</a>
+            </div>
+        </div>
+
+      <br>
+
+      <table class="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col">Titulo</th>
+              <th scope="col">Año</th>
+              <th scope="col">Autor</th>
+              <th scope="col">Editorial</th>
+              <th scope="col">Alta</th>
+            </tr>
+          </thead>
+          <tbody th:each="libro: ${libros}">
+            <tr>
+              <th scope="row"><span th:text="${libro.titulo}"></span></th>
+              <th scope="row"><span th:text="${libro.anio}"></span></th>
+              <th scope="row"><span th:text="${libro.autor.nombre}"></span></th>
+              <th scope="row"><span th:text="${libro.editorial.nombre}"></span></th>
+              <td>
+                <div th:if="${libro.alta}" class="bg-success" style="width: 25px; height: 25px; border-radius: 100%;"></div>
+                <div th:unless="${libro.alta}" class="bg-danger" style="width: 25px; height: 25px; border-radius: 100%;"></div>
+              </td>
+              <td><a th:href="@{/libro/editar/__${libro.id}__}" class="btn btn-primary">Editar</a></td>
+              <td><a th:href="@{/libro/alta/__${libro.id}__}" class="btn btn-success">Dar de alta</a></td>
+            </tr>
+          </tbody>
+      </table>
+
+  </main>
+</body>
+</html>

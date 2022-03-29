@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -27,7 +28,7 @@ public class PrestamoServicio {
     private LibroServicio libroServicio;
     
     
-    
+    @Transactional()
     public void guardarPrestamo(Long documentoCliente, String idLibro, Date fechaPrestamo, Date fechaDevolucion) throws Exception{
         Cliente cliente = verificarCliente(documentoCliente);
         Libro libro = verificarEjemplares(idLibro);
@@ -52,6 +53,7 @@ public class PrestamoServicio {
         }
     }
     
+    @Transactional()
     private Cliente verificarCliente(Long documento){
         Cliente cliente = clienteServicio.buscarClientePorDocumento(documento);
         
@@ -62,6 +64,7 @@ public class PrestamoServicio {
         }
     }
     
+    @Transactional()
     private Libro verificarEjemplares(String idLibro){
         Optional<Libro> libro = libroServicio.buscarLibroPorID(idLibro);
         

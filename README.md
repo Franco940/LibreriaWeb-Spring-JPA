@@ -47,3 +47,7 @@ Hacer prestamo, ver prestamos dados de baja, editar y dar de baja.
 <h2>Diagrama UML</h2>
 
 ![Image_text](https://github.com/Franco940/LibreriaWeb-Spring-JPA/blob/master/images/imagen_2022-03-30_011215.png)
+
+
+
+<h4><i>Tiempo total de desarrollo: 11 horas</i></h4>

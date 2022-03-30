@@ -80,4 +80,5 @@ public class EditorialServicio {
             throw new Exception("No se puede dejar el nombre en blanco");
         }
     }
+    
 }

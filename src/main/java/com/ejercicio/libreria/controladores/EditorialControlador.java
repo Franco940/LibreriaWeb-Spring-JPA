@@ -102,4 +102,5 @@ public class EditorialControlador {
             return "editarEditorial.html";
         }
     }
+    
 }

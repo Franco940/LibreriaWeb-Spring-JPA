@@ -69,11 +69,9 @@ public class PrestamoControlador {
     @GetMapping("/editar/{id}")
     public String formEditarPrestamo(ModelMap modelo, @PathVariable String id){
         Optional<Prestamo> prestamo = prestamosServicio.buscarPrestamoPorId(id);
-        List<Libro> libros = libroServicio.buscarLibrosDeAlta();
-        
         
         modelo.put("prestamo", prestamo.get());
-        modelo.put("libros", libros);
+        modelo.put("libros", listaLibros());
         
         return "prestamoEditar.html";
     }
@@ -82,7 +80,7 @@ public class PrestamoControlador {
     public String editarPrestamo(ModelMap modelo, @PathVariable String id, @RequestParam String idLibro, @RequestParam String fechaDevolucion){
         try{
             SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaDevolver = formateador.parse(fechaDevolucion);
+            Date fechaDevolver = fechaEnDate(fechaDevolucion);
             
             prestamosServicio.editarPrestamo(id, idLibro, fechaDevolver);
             
@@ -96,7 +94,7 @@ public class PrestamoControlador {
     
     @GetMapping("/hacer")
     public String formPrestamo(ModelMap modelo){
-        String fechaPrestamo = fechaActualEnString();
+        String fechaPrestamo = fechaActualEnString("normal");
     
         modelo.put("libros", listaLibros());
         modelo.put("fechaPrestamo", fechaPrestamo);
@@ -108,20 +106,20 @@ public class PrestamoControlador {
     public String hacerPrestamo(ModelMap modelo, @RequestParam() Long documento, @RequestParam String libro,
             @RequestParam String fechaDevolucion){
         try{
-            Date fechaPrestamo = fechaEnDate(fechaActualEnString());
+            Date fechaPrestamo = fechaEnDate(fechaActualEnString("ingles"));
             Date fechaDevolver = fechaEnDate(fechaDevolucion);
             
             prestamosServicio.guardarPrestamo(documento, libro, fechaPrestamo, fechaDevolver);
             
             // Muestran los datos. Sin ellos muestra el exito y los inputs se rompen
             modelo.put("exito", true);
-            modelo.put("fechaPrestamo", fechaActualEnString());
+            modelo.put("fechaPrestamo", fechaActualEnString("normal"));
             modelo.put("libros", listaLibros()); // Permite que el selector de libros no se quede vacio al dar el mensaje de exito
             return "prestamoHacer.html";
         }catch(Exception e){
             // Muestran los datos. Sin ellos muestra el error y los inputs se rompen
             modelo.put("libros", listaLibros());
-            modelo.put("fechaPrestamo", fechaActualEnString());
+            modelo.put("fechaPrestamo", fechaActualEnString("normal"));
             modelo.put("error", e.getMessage());
             return "prestamoHacer.html";
         }
@@ -141,11 +139,18 @@ public class PrestamoControlador {
         
     }
     
-    private String fechaActualEnString(){
-        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-        Date fechaActual = new Date();
-        String fechaPrestamo = formateador.format(fechaActual);
-        return fechaPrestamo;
+    private String fechaActualEnString(String formato){
+        if(formato.equals("normal")){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+            Date fechaActual = new Date();
+            String fechaPrestamo = formateador.format(fechaActual);
+            return fechaPrestamo;
+        }else{
+            SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaActual = new Date();
+            String fechaPrestamo = formateador.format(fechaActual);
+            return fechaPrestamo;
+        }
     }
     
 }

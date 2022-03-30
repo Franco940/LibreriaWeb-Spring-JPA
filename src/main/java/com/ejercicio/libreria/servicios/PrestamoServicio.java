@@ -5,6 +5,7 @@ import com.ejercicio.libreria.entidades.Libro;
 import com.ejercicio.libreria.entidades.Prestamo;
 import com.ejercicio.libreria.repositorios.PrestamoRepositorio;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,39 @@ public class PrestamoServicio {
     @Autowired
     private LibroServicio libroServicio;
     
+    
+    @Transactional(readOnly = true)
+    public List<Prestamo> prestamosDeAtla(){
+        List<Prestamo> prestamos = prestamoRepositorio.buscarPrestamosDeAlta();
+        
+        return prestamos;
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Prestamo> prestamosDeBaja(){
+        List<Prestamo> prestamos = prestamoRepositorio.buscarPrestamosDeBaja();
+        
+        return prestamos;
+    }
+    
+    @Transactional()
+    public void actualizarAlta(String id, boolean alta){
+        prestamoRepositorio.actualizarAlta(id, alta);
+    }
+    
+    @Transactional(readOnly = true)
+    public Optional<Prestamo> buscarPrestamoPorId(String id){
+        Optional<Prestamo> prestamo = prestamoRepositorio.findById(id);
+        
+        return prestamo;
+    }
+    
+    @Transactional()
+    public void editarPrestamo(String idPrestamo, String idLibro, Date fechaDevolucion){
+        Optional<Libro> libro = buscarLibro(idLibro);
+        
+        prestamoRepositorio.actualizarPrestamo(idPrestamo, fechaDevolucion, libro.get());
+    }
     
     @Transactional()
     public void guardarPrestamo(Long documentoCliente, String idLibro, Date fechaPrestamo, Date fechaDevolucion) throws Exception{
@@ -53,7 +87,14 @@ public class PrestamoServicio {
         }
     }
     
-    @Transactional()
+    @Transactional(readOnly = true)
+    private Optional<Libro> buscarLibro(String id){
+        Optional<Libro> libro = libroServicio.buscarLibroPorID(id);
+        
+        return libro;
+    }
+    
+    @Transactional(readOnly = true)
     private Cliente verificarCliente(Long documento){
         Cliente cliente = clienteServicio.buscarClientePorDocumento(documento);
         
@@ -64,7 +105,7 @@ public class PrestamoServicio {
         }
     }
     
-    @Transactional()
+    @Transactional(readOnly = true)
     private Libro verificarEjemplares(String idLibro){
         Optional<Libro> libro = libroServicio.buscarLibroPorID(idLibro);
         

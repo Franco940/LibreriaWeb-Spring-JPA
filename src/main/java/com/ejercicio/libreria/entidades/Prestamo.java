@@ -24,10 +24,10 @@ public class Prestamo {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechaPrestamo;
     
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechaDevolucion;
     
     private boolean alta;

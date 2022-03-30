@@ -2,9 +2,11 @@
 
 - <h3>Spring boot</h3>
 
+- <h3>JPA</h3>
+
 - <h3>Thymeleaf</h3>
 
-- <h3>JPA</h3>
+- <h3>BOOTSTRAP</h3>
 
 
 <h3><i>Este sitio hace idea a la administración de una librería web.</i></h3>

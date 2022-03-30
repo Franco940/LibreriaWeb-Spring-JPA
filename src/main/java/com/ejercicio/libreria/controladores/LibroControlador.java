@@ -100,8 +100,7 @@ public class LibroControlador {
             
             return "editarLibro.html";
         }catch(Exception e){
-            modelo.put("error", false);
-            System.out.println(e);
+            modelo.put("error", true);
             return "editarLibro.html";
         }
     }

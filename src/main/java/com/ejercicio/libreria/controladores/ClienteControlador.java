@@ -37,7 +37,7 @@ public class ClienteControlador {
             
             return "clienteRegistro.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            modelo.put("error", e.getMessage());
             return "clienteRegistro.html";
         }
     }

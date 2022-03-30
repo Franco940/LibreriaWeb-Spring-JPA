@@ -126,15 +126,7 @@ public class LibroServicio {
     
     private void validar(String titulo, String autor, String editorial) throws Exception{
         if(titulo.isEmpty() || titulo == null){
-            throw new Exception();
-        }
-        
-        if(autor.isEmpty() || autor == null){
-            throw new Exception();
-        }
-        
-        if(editorial.isEmpty() || editorial == null){
-            throw new Exception();
+            throw new Exception("No se puede dejar el titulo en blanco");
         }
     }
 }

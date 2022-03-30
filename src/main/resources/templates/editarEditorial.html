@@ -26,7 +26,7 @@
               <a class="nav-link link-warning" href="/cliente/registro">CLIENTES</a>
             </li>
             <li class="nav-item border border-danger">
-              <a class="nav-link link-warning" href="#">PRESTAMO DE LIBROS</a>
+              <a class="nav-link link-warning" href="/prestamo/lista">PRESTAMOS</a>
             </li>
           </ul>
     </header>
@@ -39,7 +39,7 @@
                 <div>
                     <label for="nombre" class="text-primary fs-3">Nombre</label>
                     <input type="text" name="nombre" th:value="${editorial.nombre}">
-
+                  </div>
                 <br>
                 
                 <div>
@@ -55,7 +55,7 @@
         </div>
 
         <div th:if="${error}!=null" class="alert alert-danger" role="alert">
-            No se ha podido editar
+            <p th:text="${error}"></p>
         </div>
     </main>
 </body>

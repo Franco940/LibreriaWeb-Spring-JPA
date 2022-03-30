@@ -60,16 +60,13 @@ public class ClienteServicio {
     
     private void validar(String nombre, String apellido, String telefono, Long documento) throws Exception{
         if(nombre == null || nombre.isEmpty()){
-            throw new Exception();
+            throw new Exception("No se puede dejar el nombre en blanco.");
         }
         if(apellido == null || apellido.isEmpty()){
-            throw new Exception();
+            throw new Exception("No se puede dejar el apellido en blanco.");
         }
         if(telefono == null || telefono.isEmpty()){
-            throw new Exception();
-        }
-        if(documento == null || documento.longValue() == 0){
-            throw new Exception();
+            throw new Exception("No se puede dejar el telefono en blanco.");
         }
     }
 }

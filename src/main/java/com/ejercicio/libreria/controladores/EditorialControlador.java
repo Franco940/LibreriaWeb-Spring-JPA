@@ -59,7 +59,7 @@ public class EditorialControlador {
         
         return "editorialAgregar.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            modelo.put("error", e.getMessage());
             return "editorialAgregar.html";
         }
     }
@@ -98,7 +98,7 @@ public class EditorialControlador {
             
             return "editarEditorial.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            modelo.put("error", e.getMessage());
             return "editarEditorial.html";
         }
     }

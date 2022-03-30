@@ -58,7 +58,7 @@ public class AutorControlador {
         
             return "autoresAgregar.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            modelo.put("error", e.getMessage());
             return "autoresAgregar.html";
         }
     }
@@ -97,7 +97,7 @@ public class AutorControlador {
             
             return "editarEditorial.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            modelo.put("error", e.getMessage());
             return "editarEditorial.html";
         }
     }

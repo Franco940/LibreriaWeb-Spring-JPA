@@ -77,7 +77,7 @@ public class EditorialServicio {
     private void validar(String nombre) throws Exception{
         
         if(nombre.isEmpty() || nombre == null){
-            throw new Exception();
+            throw new Exception("No se puede dejar el nombre en blanco");
         }
     }
 }

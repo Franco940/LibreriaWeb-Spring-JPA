@@ -63,27 +63,28 @@ public class LibroControlador {
             
             libroServicio.agregarLibro(titulo, anio, autor, editorial, isbn, ejemplares, alta);
             
+            // Si no pongo estos modelos.put de listas se rompen los inputs de autores y editoriales
+            modelo.put("autores", listaAutores());
+            modelo.put("editoriales", listaEditoriales());
             modelo.put("exito", true);
             
             return"libroAgregar.html";
-            
         }catch(Exception e){
-         modelo.put("error", true);
-         return "libroAgregar.html";
+            // Si no pongo estos modelos.put se rompen los inputs de autores y editoriales
+            modelo.put("autores", listaAutores());
+            modelo.put("editoriales", listaEditoriales());
+            modelo.put("error", e.getMessage());
+            return "libroAgregar.html";
         }
     }
     
     @GetMapping("/editar/{id}")
     public String fromEditarLibro(ModelMap modelo, @PathVariable String id){
-        Optional<Libro> libro = libroServicio.buscarLibroPorID(id);
         
-        List<Editorial> editoriales = editorialServicio.buscarEditoriales();
-        List<Autor> autores = autorServicio.buscarAutoresPorAlta();
+        modelo.put("libro", libro(id));
         
-        modelo.put("libro", libro.get());
-        
-        modelo.put("autores", autores);
-        modelo.put("editoriales", editoriales);
+        modelo.put("autores", listaAutores());
+        modelo.put("editoriales", listaEditoriales());
         
         return "editarLibro.html";
     }
@@ -96,11 +97,19 @@ public class LibroControlador {
             
             libroServicio.editarLibro(id, titulo, anio, autor, editorial, isbn, ejemplares);
             
+            // Si no pongo estos modelos.put de listas se rompen los inputs de autores y editoriales
+            modelo.put("libro", libro(id));
+            modelo.put("autores", listaAutores());
+            modelo.put("editoriales", listaEditoriales());
             modelo.put("exito", true);
             
             return "editarLibro.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            // Si no pongo estos modelos.put se rompen los inputs de autores y editoriales
+            modelo.put("libro", libro(id));
+            modelo.put("autores", listaAutores());
+            modelo.put("editoriales", listaEditoriales());
+            modelo.put("error", e.getMessage());
             return "editarLibro.html";
         }
     }
@@ -126,5 +135,23 @@ public class LibroControlador {
         libroServicio.borrarLibro(id, false);
         
         return "redirect:/libro/lista";
+    }
+    
+    private Libro libro(String id){
+        Optional<Libro> libro = libroServicio.buscarLibroPorID(id);
+        
+        return libro.get();
+    }
+    
+    private List<Autor> listaAutores(){
+        List<Autor> autores = autorServicio.buscarAutoresPorAlta();
+        
+        return autores;
+    }
+    
+    private List<Editorial> listaEditoriales(){
+        List<Editorial> editoriales = editorialServicio.buscarEditoriales();
+        
+        return editoriales;
     }
 }

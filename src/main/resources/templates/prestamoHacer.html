@@ -26,7 +26,7 @@
               <a class="nav-link link-warning" href="/cliente/registro">CLIENTES</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link link-warning active" href="/prestamo/lista">PRESTAMO DE LIBROS</a>
+              <a class="nav-link link-warning active" href="/prestamo/lista">PRESTAMOS</a>
             </li>
           </ul>
     </header>
@@ -36,11 +36,15 @@
         <h1 class="h1 text-success">Formulario para hacer un prestamo</h1>
         <br>
 
-      <div class="d-flex justify-content-between">
-        <div>
-            <a class="btn btn-warning" href="#">¿¿¿ ### ???</a> <!-- Dar de baja ?-->
+        <div class="d-flex justify-content-between">
+          <div>
+              <a class="btn btn-success" href="/prestamo/hacer">Hacer prestamo</a>
+          </div>
+  
+          <div>
+              <a class="btn btn-warning" href="/prestamo/baja">Ver prestamos dados de baja</a>
+          </div>
         </div>
-      </div>
 
       <br>
 
@@ -79,7 +83,9 @@
         </div>
 
         <div th:if="${error}!=null" class="alert alert-danger" role="alert">
-            Error
+           <p th:text="${error}"></p>
         </div>
 
   </main>
+</body>
+</html>

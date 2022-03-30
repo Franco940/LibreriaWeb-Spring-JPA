@@ -4,6 +4,7 @@ import com.ejercicio.libreria.entidades.Libro;
 import com.ejercicio.libreria.entidades.Prestamo;
 import com.ejercicio.libreria.servicios.LibroServicio;
 import com.ejercicio.libreria.servicios.PrestamoServicio;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -88,20 +89,16 @@ public class PrestamoControlador {
             modelo.put("exito", true);
             return "prestamoEditar.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            modelo.put("error", e.getMessage());
             return "prestamoEditar.html";
         }
     }
     
     @GetMapping("/hacer")
     public String formPrestamo(ModelMap modelo){
-        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy"); // Para mostrar la fecha en el HTML
-        Date fechaActual = new Date();
-        String fechaPrestamo = formateador.format(fechaActual);
-        
-        List<Libro> libros = libroServicio.buscarLibrosDeAlta();
+        String fechaPrestamo = fechaActualEnString();
     
-        modelo.put("libros", libros);
+        modelo.put("libros", listaLibros());
         modelo.put("fechaPrestamo", fechaPrestamo);
         
         return "prestamoHacer.html";
@@ -111,20 +108,43 @@ public class PrestamoControlador {
     public String hacerPrestamo(ModelMap modelo, @RequestParam() Long documento, @RequestParam String libro,
             @RequestParam String fechaDevolucion){
         try{
-            SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaActual = new Date();
-            String fechaActual2 = formateador.format(fechaActual);
-            
-            Date fechaPrestamo = formateador.parse(fechaActual2);
-            Date fechaDevolver = formateador.parse(fechaDevolucion);
+            Date fechaPrestamo = fechaEnDate(fechaActualEnString());
+            Date fechaDevolver = fechaEnDate(fechaDevolucion);
             
             prestamosServicio.guardarPrestamo(documento, libro, fechaPrestamo, fechaDevolver);
             
+            // Muestran los datos. Sin ellos muestra el exito y los inputs se rompen
             modelo.put("exito", true);
+            modelo.put("fechaPrestamo", fechaActualEnString());
+            modelo.put("libros", listaLibros()); // Permite que el selector de libros no se quede vacio al dar el mensaje de exito
             return "prestamoHacer.html";
         }catch(Exception e){
-            modelo.put("error", true);
+            // Muestran los datos. Sin ellos muestra el error y los inputs se rompen
+            modelo.put("libros", listaLibros());
+            modelo.put("fechaPrestamo", fechaActualEnString());
+            modelo.put("error", e.getMessage());
             return "prestamoHacer.html";
         }
+    }
+    
+    private List<Libro> listaLibros(){ // Para el seleccionador de libros
+        List<Libro> libros = libroServicio.buscarLibrosDeAlta();
+        
+        return libros;
+    }
+    
+    private Date fechaEnDate(String fecha) throws ParseException{
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaDate = formateador.parse(fecha);
+        
+        return fechaDate;
+        
+    }
+    
+    private String fechaActualEnString(){
+        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+        Date fechaActual = new Date();
+        String fechaPrestamo = formateador.format(fechaActual);
+        return fechaPrestamo;
     }
 }

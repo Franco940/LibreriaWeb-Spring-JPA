@@ -66,25 +66,19 @@ public class PrestamoServicio {
     public void guardarPrestamo(Long documentoCliente, String idLibro, Date fechaPrestamo, Date fechaDevolucion) throws Exception{
         Cliente cliente = verificarCliente(documentoCliente);
         Libro libro = verificarEjemplares(idLibro);
-        
-        if(libro != null  && cliente != null){
-            Prestamo prestamo = new Prestamo();
             
-            prestamo.setAlta(true);
-            prestamo.setCliente(cliente);
-            prestamo.setLibro(libro);
-            prestamo.setFechaPrestamo(fechaPrestamo);
-            prestamo.setFechaDevolucion(fechaDevolucion);
-            
-            prestamoRepositorio.save(prestamo);
-            
-            libro.setEjemplaresRestantes(libro.getEjemplaresRestantes() - 1);
-            libro.setEjemplaresPrestados(libro.getEjemplaresPrestados() + 1);
-            libroServicio.actualizarEjemplares(libro);
-            
-        }else{
-            throw new Exception();
-        }
+        Prestamo prestamo = new Prestamo();
+        prestamo.setAlta(true);
+        prestamo.setCliente(cliente);
+        prestamo.setLibro(libro);
+        prestamo.setFechaPrestamo(fechaPrestamo);
+        prestamo.setFechaDevolucion(fechaDevolucion);
+
+        prestamoRepositorio.save(prestamo);
+
+        libro.setEjemplaresRestantes(libro.getEjemplaresRestantes() - 1);
+        libro.setEjemplaresPrestados(libro.getEjemplaresPrestados() + 1);
+        libroServicio.actualizarEjemplares(libro);
     }
     
     @Transactional(readOnly = true)
@@ -95,24 +89,24 @@ public class PrestamoServicio {
     }
     
     @Transactional(readOnly = true)
-    private Cliente verificarCliente(Long documento){
+    private Cliente verificarCliente(Long documento) throws Exception{
         Cliente cliente = clienteServicio.buscarClientePorDocumento(documento);
         
         if(cliente != null){
             return cliente;
         }else{
-            return null;
+            throw new Exception("No se encontró un ningún cliente con ese documento.");
         }
     }
     
     @Transactional(readOnly = true)
-    private Libro verificarEjemplares(String idLibro){
+    private Libro verificarEjemplares(String idLibro) throws Exception{
         Optional<Libro> libro = libroServicio.buscarLibroPorID(idLibro);
         
         if(libro.get().getEjemplaresRestantes() > 0){
             return libro.get();
         }else{
-            return null;
+            throw new Exception("No hay más ejemplares del libro seleccionado.");
         }
     }
 }

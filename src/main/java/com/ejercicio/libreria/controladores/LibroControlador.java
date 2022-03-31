@@ -1,22 +1,15 @@
 package com.ejercicio.libreria.controladores;
 
 
-import com.ejercicio.libreria.entidades.Autor;
-import com.ejercicio.libreria.entidades.Editorial;
-import com.ejercicio.libreria.entidades.Libro;
-import com.ejercicio.libreria.servicios.AutorServicio;
-import com.ejercicio.libreria.servicios.EditorialServicio;
-import com.ejercicio.libreria.servicios.LibroServicio;
+import com.ejercicio.libreria.entidades.*;
+import com.ejercicio.libreria.servicios.*;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
 /**
  *
  * @author Franco
@@ -36,7 +29,7 @@ public class LibroControlador {
     private AutorServicio autorServicio;
     
     @GetMapping("/lista") // localhost:8080/libro/lista
-    public String listaLibros(ModelMap modelo){
+    public String vistaListaLibros(ModelMap modelo){
         List<Libro> libros = libroServicio.buscarLibrosDeAlta();
         
         modelo.put("libros", libros);
@@ -46,8 +39,8 @@ public class LibroControlador {
     
     @GetMapping("/agregar") // localhost:8080/libro/agregar
     public String formAgregarLibro(ModelMap modelo){
-        List<Editorial> editoriales = editorialServicio.buscarEditoriales();
-        List<Autor> autores = autorServicio.buscarAutoresPorAlta();
+        List<Editorial> editoriales = listaEditoriales();
+        List<Autor> autores = listaAutores();
         
         modelo.put("autores", autores);
         modelo.put("editoriales", editoriales);
@@ -68,12 +61,13 @@ public class LibroControlador {
             modelo.put("editoriales", listaEditoriales());
             modelo.put("exito", true);
             
-            return"libroAgregar.html";
         }catch(Exception e){
             // Si no pongo estos modelos.put se rompen los inputs de autores y editoriales
             modelo.put("autores", listaAutores());
             modelo.put("editoriales", listaEditoriales());
             modelo.put("error", e.getMessage());
+            
+        }finally{
             return "libroAgregar.html";
         }
     }
@@ -97,19 +91,20 @@ public class LibroControlador {
             
             libroServicio.editarLibro(id, titulo, anio, autor, editorial, isbn, ejemplares);
             
-            // Si no pongo estos modelos.put de listas se rompen los inputs de autores y editoriales
+            // Se carga de nuevo la lista de autores y editoriales y se muestra mensaje de exito
             modelo.put("libro", libro(id));
             modelo.put("autores", listaAutores());
             modelo.put("editoriales", listaEditoriales());
             modelo.put("exito", true);
             
-            return "editarLibro.html";
         }catch(Exception e){
-            // Si no pongo estos modelos.put se rompen los inputs de autores y editoriales
+            // Se carga de nuevo la lista de autores y editoriales y se muestra mensaje de error
             modelo.put("libro", libro(id));
             modelo.put("autores", listaAutores());
             modelo.put("editoriales", listaEditoriales());
             modelo.put("error", e.getMessage());
+            
+        }finally{
             return "editarLibro.html";
         }
     }

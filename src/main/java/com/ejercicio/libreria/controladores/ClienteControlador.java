@@ -5,10 +5,7 @@ import com.ejercicio.libreria.servicios.ClienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -35,9 +32,9 @@ public class ClienteControlador {
             
             modelo.put("exito", true);
             
-            return "clienteRegistro.html";
         }catch(Exception e){
             modelo.put("error", e.getMessage());
+        }finally{
             return "clienteRegistro.html";
         }
     }
@@ -67,9 +64,10 @@ public class ClienteControlador {
             clienteServicio.cambiarAlta(documento, false);
         
             modelo.put("exito", true);
-            return "clienteBaja.html";
+            
         }catch(Exception e){
             modelo.put("error", true);
+        }finally{
             return "clienteBaja.html";
         }
     }
@@ -85,9 +83,9 @@ public class ClienteControlador {
             clienteServicio.cambiarAlta(documento, true);
         
             modelo.put("exito", true);
-            return "clienteBaja.html";
         }catch(Exception e){
             modelo.put("error", true);
+        }finally{
             return "clienteBaja.html";
         }
     }

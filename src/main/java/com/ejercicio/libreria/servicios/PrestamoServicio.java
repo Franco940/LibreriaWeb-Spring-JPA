@@ -1,8 +1,6 @@
 package com.ejercicio.libreria.servicios;
 
-import com.ejercicio.libreria.entidades.Cliente;
-import com.ejercicio.libreria.entidades.Libro;
-import com.ejercicio.libreria.entidades.Prestamo;
+import com.ejercicio.libreria.entidades.*;
 import com.ejercicio.libreria.repositorios.PrestamoRepositorio;
 import java.util.Date;
 import java.util.List;

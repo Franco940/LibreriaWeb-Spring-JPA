@@ -12,11 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -79,15 +75,16 @@ public class PrestamoControlador {
     @PostMapping("/editar/{id}")
     public String editarPrestamo(ModelMap modelo, @PathVariable String id, @RequestParam String idLibro, @RequestParam String fechaDevolucion){
         try{
-            SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaDevolver = fechaEnDate(fechaDevolucion);
             
             prestamosServicio.editarPrestamo(id, idLibro, fechaDevolver);
             
             modelo.put("exito", true);
-            return "prestamoEditar.html";
+            
         }catch(Exception e){
             modelo.put("error", e.getMessage());
+            
+        }finally{
             return "prestamoEditar.html";
         }
     }
@@ -115,12 +112,12 @@ public class PrestamoControlador {
             modelo.put("exito", true);
             modelo.put("fechaPrestamo", fechaActualEnString("normal"));
             modelo.put("libros", listaLibros()); // Permite que el selector de libros no se quede vacio al dar el mensaje de exito
-            return "prestamoHacer.html";
         }catch(Exception e){
             // Muestran los datos. Sin ellos muestra el error y los inputs se rompen
             modelo.put("libros", listaLibros());
             modelo.put("fechaPrestamo", fechaActualEnString("normal"));
             modelo.put("error", e.getMessage());
+        }finally{
             return "prestamoHacer.html";
         }
     }
@@ -136,7 +133,6 @@ public class PrestamoControlador {
         Date fechaDate = formateador.parse(fecha);
         
         return fechaDate;
-        
     }
     
     private String fechaActualEnString(String formato){
